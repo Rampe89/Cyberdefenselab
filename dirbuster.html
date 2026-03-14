@@ -105,7 +105,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Gobuster-Simulation</h1>
+    <h1>Dirbuster-Simulation</h1>
 
     <!-- Erklärender Infotext -->
     <div class="info">
@@ -162,13 +162,15 @@
   <script>
     // Liste der zu simulierenden Verzeichnisse
     const directories = [
-      { path: "backup.html", status: 200 },
-      { path: "old-site.html", status: 200 },
+      //{ path: "backup.html", status: 200 },
+      //{ path: "old-site.html", status: 200 },
+      { path: "about.html", status: 200 },
       { path: "social-engineering.html", status: 200 },
       { path: "test.html", status: 403 },
       { path: "bruteforce.html", status: 200 },
       { path: "password-simulator.html", status: 200 },
       { path: "assets.html", status: 200 },
+      { path: "geheim.html", status: 200 },
       { path: "css.html", status: 403 },
       { path: "sources.html", status: 200 },
       { path: "admin.html", status: 200 },
