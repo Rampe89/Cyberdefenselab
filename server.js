@@ -2,8 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const querystring = require('querystring');
 
-const hostname = 'localhost';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Dummy-Daten für Logins
 const users = {
@@ -52,34 +51,34 @@ const server = http.createServer((req, res) => {
         } else if (req.url === '/sources.html') {
             // Quellen-Seite ausliefern
             serveFile('sources.html', res);
-         } else if (req.url === '/assets.html') {
+        } else if (req.url === '/assets.html') {
             // Assets-Seite ausliefern
             serveFile('assets.html', res);
-         } else if (req.url === '/fred.html') {
+        } else if (req.url === '/fred.html') {
             // Fred-Seite ausliefern
             serveFile('fred.html', res);
-         } else if (req.url === '/cookies.html') {
+        } else if (req.url === '/cookies.html') {
             // Cookie-Seite ausliefern
             serveFile('cookies.html', res);
-         } else if (req.url === '/contact.html') {
+        } else if (req.url === '/contact.html') {
             // Kontakt-Seite ausliefern
             serveFile('contact.html', res);
-         } else if (req.url === '/datenschutz2.html') {
+        } else if (req.url === '/datenschutz2.html') {
             // DSchutzinteraktiv-Seite ausliefern
             serveFile('datenschutz2.html', res);
-         } else if (req.url === '/robot.html') {
+        } else if (req.url === '/robot.html') {
             // Robot-Seite ausliefern
             serveFile('robot.html', res);
-         } else if (req.url === '/about.html') {
+        } else if (req.url === '/about.html') {
             // about-Seite ausliefern
             serveFile('about.html', res);
-         } else if (req.url === '/geheim.html') {
+        } else if (req.url === '/geheim.html') {
             // geheim-Seite ausliefern
             serveFile('geheim.html', res);
-         } else if (req.url === '/spam.html') {
+        } else if (req.url === '/spam.html') {
             // spam-Seite ausliefern
             serveFile('spam.html', res);
-         } else if (req.url === '/sql.html') {
+        } else if (req.url === '/sql.html') {
             // sql-Seite ausliefern
             serveFile('sql.html', res);
         } else if (req.url === '/landing.html') {
@@ -92,34 +91,32 @@ const server = http.createServer((req, res) => {
             // pt-Seite ausliefern
             serveFile('pt1.html', res);
         } else if (req.url === '/lernbuddy.html') {
-            // pt-Seite ausliefern
+            // lernbuddy-Seite ausliefern
             serveFile('lernbuddy.html', res);
-         } else if (req.url === '/new.html') {
-            // -kiosk Seite ausliefern
+        } else if (req.url === '/new.html') {
+            // kiosk-Seite ausliefern
             serveFile('new.html', res);
         } else if (req.url === '/coach.html') {
-            // -ttdr Seite ausliefern
+            // coach-Seite ausliefern
             serveFile('coach.html', res);
         } else if (req.url === '/marathon.html') {
-            // -marathon Seite ausliefern
+            // marathon-Seite ausliefern
             serveFile('marathon.html', res);
         } else if (req.url === '/llc.html') {
-            // -marathon Seite ausliefern
+            // llc-Seite ausliefern
             serveFile('llc.html', res);
         } else if (req.url === '/ferien.html') {
-            // -ferien Seite ausliefern
+            // ferien-Seite ausliefern
             serveFile('ferien.html', res);
         } else if (req.url === '/office.html') {
-            // -ferien Seite ausliefern
+            // office-Seite ausliefern
             serveFile('office.html', res);
-         } else {
-            // 404-Seite
+        } else {
             res.statusCode = 404;
-            res.setHeader('Content-Type', 'text/plain');
+            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             res.end('Seite nicht gefunden!');
         }
     } else if (req.method === 'POST' && req.url === '/login') {
-        // Login-Daten verarbeiten
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -127,21 +124,19 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             const { username, password } = querystring.parse(body);
 
-            // Login prüfen
             if (users[username] && users[username] === password) {
                 res.statusCode = 200;
-                res.setHeader('Content-Type', 'text/plain');
+                res.setHeader('Content-Type', 'text/plain; charset=utf-8');
                 res.end(`Erfolgreich eingeloggt als ${username}`);
             } else {
                 res.statusCode = 401;
-                res.setHeader('Content-Type', 'text/plain');
+                res.setHeader('Content-Type', 'text/plain; charset=utf-8');
                 res.end('Login fehlgeschlagen: Benutzername oder Passwort falsch!');
             }
         });
     } else {
-        // 404-Seite
         res.statusCode = 404;
-        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         res.end('Seite nicht gefunden!');
     }
 });
@@ -151,15 +146,16 @@ function serveFile(filename, res) {
     fs.readFile(filename, (err, data) => {
         if (err) {
             res.statusCode = 500;
+            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             res.end('Fehler beim Laden der Seite!');
         } else {
             res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.end(data);
         }
     });
 }
 
-server.listen(port, hostname, () => {
-    console.log(`Server läuft auf http://${hostname}:${port}/`);
+server.listen(port, '0.0.0.0', () => {
+    console.log(`Server läuft auf Port ${port}`);
 });
